@@ -1,0 +1,13 @@
+require('dotenv').config()
+const app = require('../app')
+const http = require('http')
+const { normalizePort } = require('../src/utils/functions/normalizePort')
+const { onError } = require('../src/utils/functions/onError')
+const { onListening } = require('../src/utils/functions/onListening')
+const port = normalizePort(process.env.PORT || '3000')
+const host = process.env.HOST || 'localhost'
+const backlogMaxLenght = process.env.BACKLOG_MAX_LENGTH || '511'
+app.set('port', port)
+const server = http.createServer(app)
+server.listen(port, host, backlogMaxLenght, onListening({ host, port }))
+server.on('error', onError)
